@@ -8,7 +8,8 @@ using Microsoft.Xna.Framework;
 namespace Apocalypse.Objects {
     class Projectile : CoreEngine.GameObject {
         // Projectile speed:
-        float PROJECTILESPEED = 10;
+        float PROJECTILESPEED = 99;
+
 
         // Target:
         float targetX;
