@@ -24,7 +24,7 @@ namespace Apocalypse.Scenes {
             Add(background);
 
             // Team params and setup
-            int TEAMSIZE = 150;
+            int TEAMSIZE = 20;
 
             // Add the blue dudes:
             for ( int i = 0; i < TEAMSIZE; i++) {

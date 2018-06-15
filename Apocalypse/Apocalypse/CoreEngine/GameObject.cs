@@ -13,6 +13,9 @@ namespace Apocalypse.CoreEngine {
         public string texName;
         public Texture2D tex;
 
+        // - Bounds
+        public Rectangle bounds;
+
         // - Drawing
         public bool visible;
         public float drawIndex;
@@ -43,6 +46,7 @@ namespace Apocalypse.CoreEngine {
 
             // Set texture
             texName = texName_;
+            SetTexture(texName);
         }
             
         /// <summary>
@@ -53,49 +57,14 @@ namespace Apocalypse.CoreEngine {
             // Set texture
             texName = texName_;
             tex = TextureLib.instance.GetTexture(texName);
-            if (texName == "deadsprite") {
-            texName = texName_;
-            }
+            this.bounds = new Rectangle((int)this.transform.X, (int)this.transform.Y, this.tex.Width, this.tex.Height);
         }
 
         /// <summary>
         /// Updates logic in this GameObject.
         /// </summary>
         public virtual void Update(GameTime gT) {
-            // If sprite can collide, check if it has collided:
-            if (canCollide && tex != null) {
-                foreach (GameObject other in Scenes.BattleScene.instance.sceneObjects ) {
-                    if (this.canCollide && tex != null && other.canCollide && other.tex != null) {
-                        // Make sure all 4 are true
-                        int count = 0;
-
-                        // Collision from other entering from RED:
-                        if (other.transform.X + other.tex.Width > transform.X) {
-                            count++;
-                        }
-
-                        // Collision from other entering from BLUE:
-                        if (other.transform.X < transform.X + tex.Width) {
-                            count++;
-                        }
-
-                        // Collision from other entering from GREEN:
-                        if (other.transform.Y + other.tex.Height > transform.Y) {
-                            count++;
-                        }
-
-                        // Collision from other entering from RED:
-                        if (other.transform.Y < transform.Y + tex.Height) {
-                            count++;
-                        }
-
-                        // Collision if 4!
-                        if (count == 4) {
-                            this.OnCollision(other);
-                        }
-                    }
-                }
-            } 
+            this.bounds = new Rectangle((int)this.transform.X, (int)this.transform.Y, this.tex.Width, this.tex.Height);
         }
 
         /// <summary>
@@ -112,11 +81,7 @@ namespace Apocalypse.CoreEngine {
         /// <param name="sB"></param>
         public void Draw( SpriteBatch sB ) {
             // Draw if sprite is visible:
-            if (tex == null) {
-                SetTexture(texName);
-            }
             if (visible) {
-
                 // If stop OOB , make sure sprite stays on the screen
                 if (stopOOB) {
                     if (transform.X < 0) { transform.X = 0; } 
@@ -124,6 +89,8 @@ namespace Apocalypse.CoreEngine {
                     if (transform.Y < 0) { transform.Y = 0; }
                     else if ((transform.Y + tex.Height) > 750) { transform.Y = 750-tex.Height; }
                 }
+
+
 
                 sB.Draw(tex, transform);
             }

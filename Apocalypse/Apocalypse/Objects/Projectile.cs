@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework;
 namespace Apocalypse.Objects {
     class Projectile : CoreEngine.GameObject {
         // Projectile speed:
-        float PROJECTILESPEED = 99;
+        float PROJECTILESPEED = 15;
 
 
         // Target:
@@ -40,17 +40,20 @@ namespace Apocalypse.Objects {
             // Move the particle
             transform.X += (float)(Math.Sin(angle) * PROJECTILESPEED);
             transform.Y += (float)(Math.Cos(angle) * PROJECTILESPEED);
-
+            
             // Slow down projecile over time
             PROJECTILESPEED *= 0.995f;
 
             // TODO: Actually delete these.
-            if ( PROJECTILESPEED < 0.01 ) {
+            if ( PROJECTILESPEED < 10 ) {
                 this.visible = false;
+                Scenes.BattleScene.instance.Remove(this);
             }
 
             // Draws bullets:
             drawIndex = transform.Y;
+
+            base.Update(gT);
         }
     }
 }

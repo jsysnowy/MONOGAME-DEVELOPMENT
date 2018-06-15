@@ -15,6 +15,7 @@ namespace Apocalypse {
 
         // Core stuff:
         private CoreEngine.TextureLib textures;
+        private CoreEngine.CollisionDetection.CollisionManager collisionManager;
 
         // Static stuff
         public static Random rnd;
@@ -30,7 +31,6 @@ namespace Apocalypse {
             graphics.PreferredBackBufferWidth = 1334;
             graphics.PreferredBackBufferHeight = 750;
             Content.RootDirectory = "Content";
-            
         }
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace Apocalypse {
         protected override void Initialize() {
             // Load managers:
             textures = new CoreEngine.TextureLib();
-
+            collisionManager = new CoreEngine.CollisionDetection.CollisionManager(new Rectangle(0, 0, 1334, 750), true);
             ApocalypeEngine.rnd = new Random();
 
             // super thing..
@@ -88,15 +88,16 @@ namespace Apocalypse {
             if ( curScene == null) {
                 curScene = new Scenes.BattleScene();
             }
-
-            curScene.Update();
-
+            
             // TODO: Add your update logic here
             if (curScene != null) {
                 foreach (CoreEngine.GameObject gO in curScene.sceneObjects) {
                     gO.Update( gameTime );
                 }
             }
+
+            curScene.Update();
+            collisionManager.Update(curScene.sceneObjects);
 
             base.Update(gameTime);
         }
@@ -119,6 +120,8 @@ namespace Apocalypse {
                     gO.Draw(spriteBatch);
                 }
             }
+
+            // collisionManager.Draw(spriteBatch, this.GraphicsDevice);
 
             // Stop drawing
             spriteBatch.End();

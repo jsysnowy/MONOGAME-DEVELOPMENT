@@ -12,6 +12,7 @@ namespace Apocalypse.CoreEngine {
         // - Current Objects:
         public List<GameObject> sceneObjects;
         public List<GameObject> newObjects;
+        public List<GameObject> removedObjects;
 
         /// <summary>
         /// Creates a new instance of Scene.
@@ -21,6 +22,8 @@ namespace Apocalypse.CoreEngine {
             // Init gameObjects:
             sceneObjects = new List<GameObject>();
             newObjects = new List<GameObject>();
+            removedObjects = new List<GameObject>();
+
             // Set param values
             name = name_;
         }
@@ -33,7 +36,12 @@ namespace Apocalypse.CoreEngine {
                 sceneObjects.Add(gO);
             }
 
+            foreach (GameObject gO in removedObjects) {
+                sceneObjects.Remove(gO);
+            }
+
             newObjects = new List<GameObject>();
+            removedObjects = new List<GameObject>();
         }
 
         /// <summary>
@@ -49,7 +57,7 @@ namespace Apocalypse.CoreEngine {
         /// </summary>
         /// <param name="obj"></param>
         public void Remove(GameObject obj) {
-            sceneObjects.Remove(obj);
+            removedObjects.Add(obj);
         }
 
         /// <summary>
